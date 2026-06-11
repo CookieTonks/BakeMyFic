@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+ebooklib
+python-multipart
+requests
+beautifulsoup4
