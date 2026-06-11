@@ -111,7 +111,7 @@ input::placeholder{color:var(--text-soft);}
 
           <sc-if value="{{ loading }}">
             <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;animation:fadeUp .4s both;">
-              <img src="{{ cookieFrame }}" style="width:72px;height:72px;object-fit:contain;"/>
+              <img src="./img/Cookie_loader.gif" style="width:96px;height:96px;object-fit:contain;"/>
               <div style="font-weight:600;font-size:15px;color:var(--text);">Leyendo el fic en AO3…</div>
               <div style="font-size:13px;color:var(--text-muted);">Obteniendo título y autor</div>
             </div>
@@ -166,7 +166,7 @@ input::placeholder{color:var(--text-soft);}
 
           <sc-if value="{{ generating }}">
             <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;animation:fadeUp .4s both;">
-              <img src="{{ cookieFrame }}" style="width:72px;height:72px;object-fit:contain;"/>
+              <img src="./img/Cookie_loader.gif" style="width:96px;height:96px;object-fit:contain;"/>
               <div style="font-weight:600;font-size:15px;color:var(--text);">Empaquetando tu EPUB…</div>
               <div style="font-size:13px;color:var(--text-muted);">Añadiendo portada y capítulos</div>
             </div>
@@ -210,7 +210,7 @@ input::placeholder{color:var(--text-soft);}
 const API_BASE = 'http://localhost:8000';
 
 class Component extends DCLogic {
-  state = { dark:false, screen:'link', url:'', title:'', author:'', cover:'', coverFile:null, errMsg:'', epubUrl:'', epubName:'', _cf:0 };
+  state = { dark:false, screen:'link', url:'', title:'', author:'', cover:'', coverFile:null, errMsg:'', epubUrl:'', epubName:'' };
 
   componentDidMount(){
     try{
@@ -222,17 +222,7 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount(){
-    this._stopCookieAnim();
     if(this.state.epubUrl) URL.revokeObjectURL(this.state.epubUrl);
-  }
-
-  _startCookieAnim(){
-    this._stopCookieAnim();
-    this._cfTimer = setInterval(() => this.setState(s => ({ _cf: (s._cf + 1) % 6 })), 160);
-  }
-  _stopCookieAnim(){
-    if(this._cfTimer){ clearInterval(this._cfTimer); this._cfTimer = null; }
-    this.setState({ _cf: 0 });
   }
 
   toggleTheme = () => {
@@ -246,17 +236,14 @@ class Component extends DCLogic {
     const url = (this.state.url || '').trim();
     if(!url){ this.setState({ screen:'error', errMsg:'Pega un enlace de AO3 primero.' }); return; }
     this.setState({ screen:'loading' });
-    this._startCookieAnim();
     try{
       const fd = new FormData();
       fd.append('url', url);
       const res = await fetch(`${API_BASE}/info`, { method:'POST', body:fd });
       const data = await res.json();
-      this._stopCookieAnim();
       if(!res.ok){ this.setState({ screen:'error', errMsg: data.detail || 'No se pudo obtener el fic.' }); return; }
       this.setState({ screen:'details', title:data.title, author:data.author });
     }catch(e){
-      this._stopCookieAnim();
       this.setState({ screen:'error', errMsg:'Error de conexión con el servidor.' });
     }
   }
@@ -276,7 +263,6 @@ class Component extends DCLogic {
 
   async generate(){
     this.setState({ screen:'generating' });
-    this._startCookieAnim();
     try{
       const fd = new FormData();
       fd.append('url', this.state.url);
@@ -284,12 +270,10 @@ class Component extends DCLogic {
       const res = await fetch(`${API_BASE}/convert`, { method:'POST', body:fd });
       if(!res.ok){
         const data = await res.json();
-        this._stopCookieAnim();
         this.setState({ screen:'error', errMsg: data.detail || 'Error generando el EPUB.' });
         return;
       }
       const blob = await res.blob();
-      this._stopCookieAnim();
       const cd = res.headers.get('Content-Disposition') || '';
       const match = cd.match(/filename="([^"]+)"/);
       const epubName = match ? match[1] : (this.state.title || 'fic') + '.epub';
@@ -301,7 +285,6 @@ class Component extends DCLogic {
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       this.setState({ screen:'done', epubUrl, epubName });
     }catch(e){
-      this._stopCookieAnim();
       this.setState({ screen:'error', errMsg:'Error de conexión con el servidor.' });
     }
   }
@@ -355,7 +338,6 @@ class Component extends DCLogic {
       ],
       url: this.state.url, title: this.state.title, author: this.state.author, cover: this.state.cover,
       errMsg: this.state.errMsg, epubName: this.state.epubName,
-      cookieFrame: `./img/cookie_f${this.state._cf}.png`,
       step, stepLabel: 'Paso ' + step + ' de 4', progress: (((step - 1) / 3) * 100) + '%', caption: captionMap[sc],
       link: sc === 'link', loading: sc === 'loading', error: sc === 'error',
       details: sc === 'details', coverScreen: sc === 'cover', generating: sc === 'generating', done: sc === 'done',
