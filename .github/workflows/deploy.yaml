@@ -14,17 +14,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: sand4rt/ftp-deployer@v1.8
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          sftp: false
+          host: ${{ secrets.FTP_SERVER }}
+          port: 21
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /home/cokiecod/bakemyfic.cookiecodes.com.mx/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/__pycache__/**
-            **/*.pyc
-            .thumbnail
-            CLAUDE.md
+          remote_folder: /home/cokiecod/bakemyfic.cookiecodes.com.mx/
+          local_folder: ./
+          cleanup: false
+          passive: true
+          exclude: '["**/.git*", "**/.git*/**", "**/__pycache__/**", "**/*.pyc", ".thumbnail", "CLAUDE.md"]'
