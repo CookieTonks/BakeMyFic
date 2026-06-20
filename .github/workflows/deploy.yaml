@@ -13,16 +13,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Deploy via FTP
-        uses: sand4rt/ftp-deployer@v1.8
-        with:
-          sftp: false
-          host: ${{ secrets.FTP_SERVER }}
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          remote_folder: /home/cokiecod/bakemyfic.cookiecodes.com.mx/
-          local_folder: ./
-          cleanup: false
-          passive: true
-          exclude: '["**/.git*", "**/.git*/**", "**/__pycache__/**", "**/*.pyc", ".thumbnail", "CLAUDE.md"]'
+      - name: Deploy via LFTP
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -e "
+            set ssl:verify-certificate no;
+            set ftp:passive-mode yes;
+            set net:timeout 30;
+            set net:max-retries 3;
+            open ${{ secrets.FTP_SERVER }};
+            user ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }};
+            mirror --reverse --delete --verbose \
+              --exclude ^\.git/ \
+              --exclude __pycache__/ \
+              --exclude \.pyc$ \
+              --exclude ^\.thumbnail$ \
+              --exclude ^CLAUDE\.md$ \
+              ./ /home/cokiecod/bakemyfic.cookiecodes.com.mx/;
+            bye
+          "
