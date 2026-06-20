@@ -1,0 +1,30 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Upload to FTP server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /home/cokiecod/bakemyfic.cookiecodes.com.mx/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/__pycache__/**
+            **/*.pyc
+            .thumbnail
+            CLAUDE.md
