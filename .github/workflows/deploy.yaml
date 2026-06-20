@@ -17,12 +17,14 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y lftp
           lftp -e "
+            set ftp:ssl-force yes;
+            set ftp:ssl-protect-data yes;
             set ssl:verify-certificate no;
             set ftp:passive-mode yes;
-            set net:timeout 30;
-            set net:max-retries 3;
-            open ${{ secrets.FTP_SERVER }};
-            user ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }};
+            set net:timeout 60;
+            set net:max-retries 5;
+            set net:reconnect-interval-base 5;
+            open ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}:21;
             mirror --reverse --delete --verbose \
               --exclude ^\.git/ \
               --exclude __pycache__/ \
