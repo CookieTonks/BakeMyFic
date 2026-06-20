@@ -1,5 +1,6 @@
 import asyncio
 import io
+import pathlib
 
 from fastapi import FastAPI, Form, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,9 @@ from fastapi.responses import StreamingResponse
 from scraper import fetch_info, fetch_work
 from epub_gen import build_epub, epub_filename
 
-app = FastAPI(title="Cookie AO3 → EPUB API")
+DEFAULT_COVER = pathlib.Path(__file__).parent.parent / "img" / "Portada Bunny.png"
+
+app = FastAPI(title="Bake My Fic! API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,6 +51,8 @@ async def convert(
     cover_bytes = None
     if cover and cover.filename:
         cover_bytes = await cover.read()
+    elif DEFAULT_COVER.exists():
+        cover_bytes = DEFAULT_COVER.read_bytes()
 
     try:
         work = await asyncio.to_thread(fetch_work, url)

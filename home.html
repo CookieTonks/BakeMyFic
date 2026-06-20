@@ -137,6 +137,9 @@
       <div
         style="position:sticky;top:0;z-index:50;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-bottom:1px solid var(--glass-brd);">
         <img src="./img/Logo.png" style="height:180px;width:auto;display:block;" />
+        <span
+          style="position:absolute;left:50%;transform:translateX(-50%);font-size:20px;font-weight:800;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;">Bake
+          My Fic!</span>
         <button onClick="{{ toggleTheme }}"
           style="display:flex;align-items:center;gap:9px;background:var(--bg2);border:1px solid var(--glass-brd);border-radius:50px;padding:6px 9px 6px 15px;cursor:pointer;font-family:'Poppins';font-weight:600;font-size:12.5px;color:var(--text-muted);">
           <span>Tema</span>
@@ -163,9 +166,9 @@
             <div style="text-align:center;">
               <div
                 style="font-size:36px;font-weight:800;line-height:1.08;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent;">
-                Tu fic,<br> ahora en tu kindle.</div>
+                Horneamos<br> tu fic favorito.</div>
               <p style="font-size:14.5px;color:var(--text-muted);line-height:1.6;margin:14px 0 0;max-width:300px;">Pega
-                el enlace de AO3, elige una portada y descárgalo en EPUB y esta listo para subirlo.</p>
+                el enlace de AO3, elige una portada y lo horneamos en EPUB listo para tu Kindle.</p>
             </div>
             <div style="perspective:1300px;">
               <div
@@ -173,11 +176,14 @@
                 <sc-if value="{{ coverImg }}">{{ coverImgEl }}</sc-if>
                 <sc-if value="{{ noCover }}">
                   <div style="position:absolute;inset:0;">
-                    <img src="./img/Portada Gato.png" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+                    <img src="./img/Portada Bunny.png" style="width:100%;height:100%;object-fit:cover;display:block;" />
                     <sc-if value="{{ hasTitle }}">
-                      <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 16px 18px;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 100%);">
-                        <div style="font-weight:800;font-size:15px;line-height:1.25;color:#fff;text-wrap:balance;">{{ title }}</div>
-                        <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,.8);margin-top:4px;">{{ author }}</div>
+                      <div
+                        style="position:absolute;bottom:0;left:0;right:0;padding:20px 16px 18px;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 100%);">
+                        <div style="font-weight:800;font-size:15px;line-height:1.25;color:#fff;text-wrap:balance;">{{
+                          title }}</div>
+                        <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,.8);margin-top:4px;">{{ author
+                          }}</div>
                       </div>
                     </sc-if>
                   </div>
@@ -224,10 +230,11 @@
 
               <sc-if value="{{ link }}" hint-placeholder-val="{{ true }}">
                 <div style="animation:fadeUp .5s ease both;">
-                  <h3 style="font-size:21px;font-weight:700;margin:0 0 6px;color:var(--text);">Pega el enlace de tu fic
+                  <h3 style="font-size:21px;font-weight:700;margin:0 0 6px;color:var(--text);">Agrega el ingrediente
+                    principal
                   </h3>
-                  <p style="font-size:14px;color:var(--text-muted);margin:0 0 18px;">Cópialo desde la barra del
-                    navegador en AO3.</p>
+                  <p style="font-size:14px;color:var(--text-muted);margin:0 0 18px;">Pega el enlace de AO3 y empezamos a
+                    preparar la masa.</p>
                   <input value="{{ url }}" onChange="{{ onUrl }}" placeholder="https://archiveofourown.org/works/123456"
                     style="width:100%;padding:15px 16px;border-radius:15px;border:1.5px solid var(--glass-brd);background:var(--card-bg);color:var(--text);font-family:'Poppins';font-size:14.5px;outline:none;transition:border-color .2s,box-shadow .2s;"
                     style-focus="border-color:var(--violet);box-shadow:0 0 0 4px rgba(120,94,220,.14);" />
@@ -235,7 +242,7 @@
                     <button onClick="{{ start }}"
                       style="display:inline-flex;align-items:center;gap:8px;background:var(--grad-btn);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-family:'Poppins';font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:0 12px 26px -10px rgba(120,94,220,.85);transition:transform .2s,box-shadow .2s;"
                       style-hover="transform:translateY(-2px);box-shadow:0 18px 34px -10px rgba(120,94,220,.95);">Buscar
-                      fic</button>
+                      receta</button>
                     <button onClick="{{ useExample }}"
                       style="background:transparent;color:var(--violet);border:1.5px solid var(--glass-brd);border-radius:50px;padding:12px 20px;font-family:'Poppins';font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;"
                       style-hover="background:var(--bg2);border-color:var(--lavender);">Probar con un ejemplo</button>
@@ -247,8 +254,8 @@
                 <div
                   style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;animation:fadeUp .4s both;">
                   <img src="./img/Cookie_loader.gif" style="width:96px;height:96px;object-fit:contain;" />
-                  <div style="font-weight:600;font-size:15px;color:var(--text);">Leyendo el fic en AO3…</div>
-                  <div style="font-size:13px;color:var(--text-muted);">Obteniendo título y autor</div>
+                  <div style="font-weight:600;font-size:15px;color:var(--text);">Buscando los ingredientes…</div>
+                  <div style="font-size:13px;color:var(--text-muted);">Leyendo título y autor desde AO3</div>
                 </div>
               </sc-if>
 
@@ -261,7 +268,7 @@
                   <div style="font-size:14.5px;color:var(--text);line-height:1.55;">{{ errMsg }}</div>
                   <button onClick="{{ retry }}"
                     style="background:transparent;color:var(--violet);border:1.5px solid var(--glass-brd);border-radius:50px;padding:11px 20px;font-family:'Poppins';font-weight:600;font-size:14px;cursor:pointer;"
-                    style-hover="background:var(--bg2);">Volver a intentar</button>
+                    style-hover="background:var(--bg2);">Intentar de nuevo</button>
                 </div>
               </sc-if>
 
@@ -269,7 +276,7 @@
                 <div style="animation:fadeUp .5s both;">
                   <div
                     style="font-size:11.5px;font-weight:700;letter-spacing:1.5px;color:var(--violet);margin-bottom:12px;">
-                    FIC ENCONTRADO</div>
+                    RECETA ENCONTRADA</div>
                   <div style="display:flex;gap:18px;align-items:center;margin-bottom:26px;">
                     <div
                       style="width:60px;height:84px;border-radius:8px;background:var(--grad-hero);box-shadow:0 12px 24px -10px rgba(120,94,220,.7);flex:none;">
@@ -285,19 +292,19 @@
                   <div style="display:flex;gap:10px;flex-wrap:wrap;">
                     <button onClick="{{ reset }}"
                       style="background:transparent;color:var(--text-muted);border:1.5px solid var(--glass-brd);border-radius:50px;padding:12px 20px;font-family:'Poppins';font-weight:600;font-size:14px;cursor:pointer;"
-                      style-hover="background:var(--bg2);">Cambiar enlace</button>
+                      style-hover="background:var(--bg2);">Cambiar receta</button>
                     <button onClick="{{ toCover }}"
                       style="display:inline-flex;align-items:center;gap:8px;background:var(--grad-btn);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-family:'Poppins';font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:0 12px 26px -10px rgba(120,94,220,.85);transition:transform .2s;"
-                      style-hover="transform:translateY(-2px);">Elegir portada</button>
+                      style-hover="transform:translateY(-2px);">Decorar el pastel</button>
                   </div>
                 </div>
               </sc-if>
 
               <sc-if value="{{ coverScreen }}">
                 <div style="animation:fadeUp .5s both;">
-                  <h3 style="font-size:21px;font-weight:700;margin:0 0 6px;color:var(--text);">Sube tu portada</h3>
+                  <h3 style="font-size:21px;font-weight:700;margin:0 0 6px;color:var(--text);">Decora tu creación</h3>
                   <p style="font-size:14px;color:var(--text-muted);margin:0 0 16px;">JPG o PNG. Vertical (2:3) queda
-                    mejor. Si no, la pondre yo :)</p>
+                    mejor. Si no, yo lo pongo :)</p>
                   <label onDrop="{{ onDrop }}" onDragOver="{{ onDragOver }}"
                     style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;min-height:128px;padding:18px;border-radius:18px;border:2px dashed var(--glass-brd);background:var(--card-bg);cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:16px;"
                     style-hover="border-color:var(--violet);background:var(--bg2);">
@@ -310,9 +317,9 @@
                       <div
                         style="width:42px;height:42px;border-radius:50%;background:var(--bg2);color:var(--violet);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;">
                         ↑</div>
-                      <div style="font-size:14px;font-weight:600;color:var(--text);">Arrastra una imagen o haz clic
+                      <div style="font-size:14px;font-weight:600;color:var(--text);">Arrastra tu decoración o haz clic
                       </div>
-                      <div style="font-size:12px;color:var(--text-soft);">la verás en el libro de la izquierda</div>
+                      <div style="font-size:12px;color:var(--text-soft);">la verás en la portada de la izquierda</div>
                     </sc-if>
                   </label>
                   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
@@ -323,7 +330,7 @@
                         style="background:transparent;color:var(--text-soft);border:none;font-family:'Poppins';font-weight:600;font-size:13px;cursor:pointer;text-decoration:underline;">Quitar</button></sc-if>
                     <button onClick="{{ generate }}"
                       style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;background:var(--grad-btn);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-family:'Poppins';font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:0 12px 26px -10px rgba(120,94,220,.85);transition:transform .2s;"
-                      style-hover="transform:translateY(-2px);">Generar EPUB</button>
+                      style-hover="transform:translateY(-2px);">¡Al horno!</button>
                   </div>
                 </div>
               </sc-if>
@@ -332,8 +339,8 @@
                 <div
                   style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;animation:fadeUp .4s both;">
                   <img src="./img/Cookie_loader.gif" style="width:96px;height:96px;object-fit:contain;" />
-                  <div style="font-weight:600;font-size:15px;color:var(--text);">Empaquetando tu EPUB…</div>
-                  <div style="font-size:13px;color:var(--text-muted);">Añadiendo portada y capítulos</div>
+                  <div style="font-weight:600;font-size:15px;color:var(--text);">Horneando tu fic…</div>
+                  <div style="font-size:13px;color:var(--text-muted);">Mezclando portada y capítulos</div>
                 </div>
               </sc-if>
 
@@ -343,7 +350,7 @@
                     <div
                       style="width:30px;height:30px;border-radius:50%;background:rgba(40,201,65,.15);color:#28c941;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;">
                       ✓</div>
-                    <div style="font-size:17px;font-weight:700;color:var(--text);">¡Tu EPUB está listo!</div>
+                    <div style="font-size:17px;font-weight:700;color:var(--text);">¡Recién salido del horno!</div>
                   </div>
                   <div
                     style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-muted);background:var(--bg2);padding:8px 14px;border-radius:50px;margin-bottom:18px;">
@@ -354,10 +361,12 @@
                       style-hover="transform:translateY(-2px);">Descargar EPUB ↓</button>
                     <button onClick="{{ reset }}"
                       style="background:transparent;color:var(--text-muted);border:1.5px solid var(--glass-brd);border-radius:50px;padding:13px 22px;font-family:'Poppins';font-weight:600;font-size:14px;cursor:pointer;"
-                      style-hover="background:var(--bg2);">Convertir otro fic</button>
+                      style-hover="background:var(--bg2);">Hornear otro fic</button>
                   </div>
-                  <div style="background:var(--bg2);border-radius:18px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-                    <div style="font-size:13.5px;color:var(--text);line-height:1.5;">¡Ya tienes tu archivo! Cárgalo en <strong>Send to Kindle</strong> y aparecerá en tu dispositivo.</div>
+                  <div
+                    style="background:var(--bg2);border-radius:18px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                    <div style="font-size:13.5px;color:var(--text);line-height:1.5;">¡Tu fic está listo para servir!
+                      Súbelo a <strong>Send to Kindle</strong> y disfrútalo en tu dispositivo.</div>
                     <a href="https://www.amazon.com.mx/sendtokindle" target="_blank" rel="noopener noreferrer"
                       style="flex:none;display:inline-flex;align-items:center;gap:6px;color:var(--violet);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity .2s;"
                       style-hover="opacity:.7;">Ir a Send to Kindle ↗</a>
@@ -402,17 +411,17 @@ class Component extends DCLogic {
 
   async start(){
     const url = (this.state.url || '').trim();
-    if(!url){ this.setState({ screen:'error', errMsg:'Pega un enlace de AO3 primero.' }); return; }
+    if(!url){ this.setState({ screen:'error', errMsg:'¡Falta el ingrediente principal! Pega un enlace de AO3.' }); return; }
     this.setState({ screen:'loading' });
     try{
       const fd = new FormData();
       fd.append('url', url);
       const res = await fetch(`${API_BASE}/info`, { method:'POST', body:fd });
       const data = await res.json();
-      if(!res.ok){ this.setState({ screen:'error', errMsg: data.detail || 'No se pudo obtener el fic.' }); return; }
+      if(!res.ok){ this.setState({ screen:'error', errMsg: data.detail || 'No encontramos esa receta.' }); return; }
       this.setState({ screen:'details', title:data.title, author:data.author });
     }catch(e){
-      this.setState({ screen:'error', errMsg:'Error de conexión con el servidor.' });
+      this.setState({ screen:'error', errMsg:'¡El horno no responde! Revisa tu conexión.' });
     }
   }
 
@@ -429,60 +438,17 @@ class Component extends DCLogic {
     r.readAsDataURL(file);
   }
 
-  _buildDefaultCover(title){
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const w = img.naturalWidth || 600;
-        const h = img.naturalHeight || 900;
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        if(title){
-          const grad = ctx.createLinearGradient(0, h * 0.52, 0, h);
-          grad.addColorStop(0, 'rgba(0,0,0,0)');
-          grad.addColorStop(1, 'rgba(0,0,0,0.72)');
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, h * 0.52, w, h * 0.48);
-          const fontSize = Math.round(w * 0.09);
-          ctx.fillStyle = '#fff';
-          ctx.font = `800 ${fontSize}px Poppins, sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'alphabetic';
-          const maxW = w * 0.84;
-          const words = title.split(' ');
-          const lines = [];
-          let line = '';
-          for(const word of words){
-            const test = line ? line + ' ' + word : word;
-            if(ctx.measureText(test).width > maxW && line){ lines.push(line); line = word; }
-            else line = test;
-          }
-          if(line) lines.push(line);
-          const lh = fontSize * 1.3;
-          const startY = h - Math.round(h * 0.07) - (lines.length - 1) * lh;
-          lines.forEach((l, i) => ctx.fillText(l, w / 2, startY + i * lh));
-        }
-        canvas.toBlob(resolve, 'image/png');
-      };
-      img.onerror = () => resolve(null);
-      img.src = './img/Portada Gato.png';
-    });
-  }
-
   async generate(){
     this.setState({ screen:'generating' });
     try{
       const fd = new FormData();
       fd.append('url', this.state.url);
-      let coverFile = this.state.coverFile;
-      if(!coverFile) coverFile = await this._buildDefaultCover(this.state.title);
+      const coverFile = this.state.coverFile;
       if(coverFile) fd.append('cover', coverFile, 'portada.png');
       const res = await fetch(`${API_BASE}/convert`, { method:'POST', body:fd });
       if(!res.ok){
         const data = await res.json();
-        this.setState({ screen:'error', errMsg: data.detail || 'Error generando el EPUB.' });
+        this.setState({ screen:'error', errMsg: data.detail || 'Algo salió mal en el horno.' });
         return;
       }
       const blob = await res.blob();
@@ -497,7 +463,7 @@ class Component extends DCLogic {
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       this.setState({ screen:'done', epubUrl, epubName });
     }catch(e){
-      this.setState({ screen:'error', errMsg:'Error de conexión con el servidor.' });
+      this.setState({ screen:'error', errMsg:'¡El horno no responde! Revisa tu conexión.' });
     }
   }
 
@@ -516,11 +482,11 @@ class Component extends DCLogic {
   renderVals(){
     const sc = this.state.screen;
     const stepMap = { link:1, loading:1, error:1, details:2, cover:3, generating:3, done:4 };
-    const captionMap = { link:'Esperando tu enlace', loading:'Leyendo en AO3…', error:'Revisa el enlace', details:'Datos del fic listos', cover:'Añade una portada', generating:'Empaquetando…', done:'Listo para tu Kindle' };
+    const captionMap = { link:'Esperando ingredientes', loading:'Buscando en AO3…', error:'Revisa la receta', details:'Ingredientes listos', cover:'Hora de decorar', generating:'En el horno…', done:'Listo para servir' };
     const step = stepMap[sc];
     const hasCover = !!this.state.cover;
     const hasTitle = !!this.state.title;
-    const labels = ['Enlace','Detalles','Portada','Listo'];
+    const labels = ['Receta','Ingredientes','Decoración','Servir'];
 
     const nodes = labels.map((label, i) => {
       const n = i + 1;
@@ -545,7 +511,7 @@ class Component extends DCLogic {
       noiseStyle: { position:'fixed', inset:0, pointerEvents:'none', zIndex:1, opacity:0.05, mixBlendMode:'overlay', backgroundImage: noiseUri },
       url: this.state.url, title: this.state.title, author: this.state.author, cover: this.state.cover,
       errMsg: this.state.errMsg, epubName: this.state.epubName,
-      step, stepLabel: 'Paso ' + step + ' de 4', progress: (((step - 1) / 3) * 100) + '%', caption: captionMap[sc],
+      step, stepLabel: 'Paso ' + step + ' de 4 🍪', progress: (((step - 1) / 3) * 100) + '%', caption: captionMap[sc],
       link: sc === 'link', loading: sc === 'loading', error: sc === 'error',
       details: sc === 'details', coverScreen: sc === 'cover', generating: sc === 'generating', done: sc === 'done',
       hasCover, noCover: !hasCover, hasTitle,
