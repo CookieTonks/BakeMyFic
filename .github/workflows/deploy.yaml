@@ -37,6 +37,6 @@ jobs:
             --exclude \.pyc$ \
             --exclude ^\.thumbnail$ \
             --exclude ^CLAUDE\.md$ \
-            ./ /home/cokiecod/bakemyfic.cookiecodes.com.mx/
+            ./ /
           bye
           EOF
