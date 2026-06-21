@@ -1,43 +1,22 @@
-name: Deploy to GitHub Pages
+name: Deploy via FTP
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          path: .
-          exclude: |
-            backend/**
-            __pycache__/**
-            CLAUDE.md
-            .github/**
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
