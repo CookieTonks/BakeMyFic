@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 from scraper import fetch_info, fetch_work
-from epub_gen import build_epub, epub_filename
+from epub_gen import build_epub, epub_filename, replace_cover
 
 DEFAULT_COVER = pathlib.Path(__file__).parent.parent / "img" / "Portada Bunny.png"
 
@@ -75,4 +75,30 @@ async def convert(
         io.BytesIO(epub_bytes),
         media_type="application/epub+zip",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@app.post("/cover")
+async def cover(
+    epub: UploadFile = File(...),
+    cover: UploadFile = File(...),
+):
+    """Replaces the cover of an uploaded EPUB and streams the result back."""
+    if not epub.filename or not epub.filename.lower().endswith(".epub"):
+        raise HTTPException(status_code=422, detail="El archivo debe ser un .epub")
+
+    epub_bytes = await epub.read()
+    cover_bytes = await cover.read()
+
+    try:
+        new_epub_bytes = await asyncio.to_thread(replace_cover, epub_bytes, cover_bytes)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error cambiando la portada: {e}")
+
+    return StreamingResponse(
+        io.BytesIO(new_epub_bytes),
+        media_type="application/epub+zip",
+        headers={"Content-Disposition": f'attachment; filename="{epub.filename}"'},
     )
