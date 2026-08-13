@@ -10,7 +10,7 @@ from scraper import fetch_info, fetch_work
 from epub_gen import build_epub, epub_filename, replace_cover
 from pdf_gen import extract_pdf
 
-DEFAULT_COVER = pathlib.Path(__file__).parent.parent / "img" / "Portada Bunny.png"
+DEFAULT_COVER = pathlib.Path(__file__).parent / "img" / "Portada Bunny.png"
 
 app = FastAPI(title="Bake My Fic! API")
 

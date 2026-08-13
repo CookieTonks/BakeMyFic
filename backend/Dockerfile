@@ -1,16 +1,14 @@
-# Build from the repo root: docker build -f backend/Dockerfile -t bake-my-fic-backend .
-# (main.py looks up ../img/Portada Bunny.png, so img/ must be in the build context)
+# Railway's Root Directory for this service is "backend", so the build
+# context is this folder itself (not the repo root) — every COPY below is
+# relative to backend/. main.py reads its default cover from ./img/Portada Bunny.png.
 FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY backend/requirements.txt backend/requirements.txt
-RUN pip install --no-cache-dir -r backend/requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ backend/
-COPY img/ img/
-
-WORKDIR /app/backend
+COPY . .
 
 EXPOSE 8000
 
