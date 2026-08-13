@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 
 from scraper import fetch_info, fetch_work
 from epub_gen import build_epub, epub_filename, replace_cover
+from pdf_gen import extract_pdf
 
 DEFAULT_COVER = pathlib.Path(__file__).parent.parent / "img" / "Portada Bunny.png"
 
@@ -64,6 +65,45 @@ async def convert(
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"No se pudo conectar con AO3: {e}")
+
+    try:
+        epub_bytes = await asyncio.to_thread(build_epub, work, cover_bytes)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generando el EPUB: {e}")
+
+    filename = epub_filename(work.title)
+    return StreamingResponse(
+        io.BytesIO(epub_bytes),
+        media_type="application/epub+zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@app.post("/pdf-to-epub")
+async def pdf_to_epub(
+    pdf: UploadFile = File(...),
+    cover: UploadFile = File(None),
+    title: str = Form(None),
+    author: str = Form(None),
+):
+    """Builds an EPUB from an uploaded PDF and streams it back."""
+    if not pdf.filename or not pdf.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=422, detail="El archivo debe ser un .pdf")
+
+    pdf_bytes = await pdf.read()
+
+    cover_bytes = None
+    if cover and cover.filename:
+        cover_bytes = await cover.read()
+    elif DEFAULT_COVER.exists():
+        cover_bytes = DEFAULT_COVER.read_bytes()
+
+    try:
+        work = await asyncio.to_thread(extract_pdf, pdf_bytes, title, author)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error leyendo el PDF: {e}")
 
     try:
         epub_bytes = await asyncio.to_thread(build_epub, work, cover_bytes)
