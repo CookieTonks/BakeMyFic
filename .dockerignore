@@ -1,0 +1,8 @@
+.git
+.github
+backend/__pycache__
+**/__pycache__
+**/*.pyc
+.thumbnail
+README.md
+CLAUDE.md
